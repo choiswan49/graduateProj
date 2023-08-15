@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, Outlet } from 'react-router-dom';
 import './App.css';
 
 import {Header, NavBar, Footer} from './components/index'
@@ -13,22 +13,23 @@ import  {
   Login,
   NotFound
 } from './routes'
+import RequireAuth from './layouts/RequireAuth';
 
 const App = () => {
   return (
     
     <>
     <Header />
-    <NavBar />
+
     <Routes>
       <Route path='/' element={<Main />} />
       <Route path='/main' element={<Main />} />
 
-      <Route path='/music' element={<Music />} />
-      <Route path='/food' element={<Food />} />
-      <Route path='/netflix' element={<Netflix />} />
-      <Route path='/youtube' element={<Youtube />} />
-      <Route path='/calendar' element={<Calendar />} />
+      <Route path='/music' element={<RequireAuth><Music /></RequireAuth>} />
+      <Route path='/food' element={<RequireAuth><Food /></RequireAuth>} />
+      <Route path='/netflix' element={<RequireAuth><Netflix /></RequireAuth>} />
+      <Route path='/youtube' element={<RequireAuth><Youtube /></RequireAuth>} />
+      <Route path='/calendar' element={<RequireAuth><Calendar /></RequireAuth>} />
       <Route path='/login' element={<Login />} />
 
       <Route path='/*' element={<NotFound />} />

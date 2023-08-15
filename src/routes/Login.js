@@ -1,8 +1,29 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useContext, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 const Login = () => {
-  
-//   const videoEl = document.getElementById('webcam-id');
+    const auth = useContext(AuthContext);
+    const navigate = useNavigate();
+    const useridRef = useRef();
+
+    const loginHandle = ()=>{
+        //err
+        if (useridRef.current.value === ''){
+            alert('id를 입력하세요')
+            useridRef.current.focus();
+        }else{
+            const currentUser = {
+                name : useridRef.current.value
+            }
+            auth.login(currentUser); // 로그인 정보 저장
+            useridRef.current.value=''
+
+            navigate('/main')
+        }
+    }
+
   const videoEl = useRef(null)
   const startWebcam = ()=>{
       if(navigator.mediaDevices.getUserMedia){
@@ -27,7 +48,7 @@ const Login = () => {
   }
   
   return (
-    <>
+    <div className='login-container'>
     <h1>얼굴 인식 로그인</h1>
     <span></span>
     <div className="buttons">
@@ -35,7 +56,21 @@ const Login = () => {
         <button onClick={stopWebcam}>캠 닫기</button>
     </div>
     <video ref={videoEl} autoPlay={true}></video>
-    </>
+
+        <form className='login-content'
+            onSubmit={(e)=>e.preventDefault()}
+        >
+            <div>
+                <input type='text'
+                    placeholder='아이디'
+                    autoFocus
+                    id='user_id'
+                    ref={useridRef}
+                />
+            </div>
+            <button onClick={loginHandle}>로그인</button>
+        </form>
+    </div>
   )
 }
 
